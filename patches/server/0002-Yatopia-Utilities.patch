@@ -28,7 +28,7 @@ index 0000000000000000000000000000000000000000..6aac96e4e4e312262faa281f23a52fd9
 --- /dev/null
 +++ b/src/main/java/org/itsriggyman/elytra/TimeUtils.java
 @@ -0,0 +1,27 @@
-+package xyz.arthurb.mirai.server.util;
++package org.itsriggyman.elytra.server.util;
 +
 +import java.util.concurrent.TimeUnit;
 +
@@ -75,7 +75,7 @@ index 0000000000000000000000000000000000000000..1bda325ec0eabaec992145e812785ddf
 --- /dev/null
 +++ b/src/main/java/org/itsriggyman/elytra/server/util/FastRandom.java
 @@ -0,0 +1,64 @@
-+package xyz.arthurb.mirai.server.util;
++package org.itsriggyman.elytra.server.util;
 +
 +import org.apache.commons.rng.core.source64.XoRoShiRo128PlusPlus;
 +
