@@ -7,7 +7,7 @@ Original code by YatopiaMC, licensed under MIT
 You can find the original code on https://github.com/YatopiaMC/Yatopia
 
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 24d772c18d5a448154909e4a51964ba29485a5c2..3bc881e85c974db5faab0248dc9744f1ddb2384f 100644
+index bb7457e60c35e80ca0dc7f675146e9fd96a8ffe3..a755f31afd10707b2f690f91651bee5d0bca3fe4 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -115,8 +115,10 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
