@@ -1,8 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: Isaac Clowes <riggyman@tutanota.com>
-Date: Sun, 17 Oct 2021 19:55:24 +0100
+From: Mykyta Komarnytskyy <nkomarn@hotmail.com>
+Date: Fri, 27 Nov 2020 10:33:59 -0600
 Subject: [PATCH] (Yatopia) Use faster random implementation
 
+Original code by YatopiaMC, licensed under MIT
+You can find the original code on https://github.com/YatopiaMC/Yatopia
 
 diff --git a/src/main/java/com/destroystokyo/paper/loottable/PaperLootableInventoryData.java b/src/main/java/com/destroystokyo/paper/loottable/PaperLootableInventoryData.java
 index 20cfe7b9b7127ddeb97aa91d759fc17b4a548eaf..1fde57835bc3787dc3e789ad15e5a315a54fd31b 100644
