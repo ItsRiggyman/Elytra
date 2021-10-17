@@ -55,10 +55,10 @@ index 25ae440839f1d286550a77d0a4c61e1dc02b369d..02085fdc6b868945ef93d83418ac4c05
          }
  
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 3bc881e85c974db5faab0248dc9744f1ddb2384f..a755f31afd10707b2f690f91651bee5d0bca3fe4 100644
+index 24d772c18d5a448154909e4a51964ba29485a5c2..bb7457e60c35e80ca0dc7f675146e9fd96a8ffe3 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -123,13 +123,14 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -121,13 +121,14 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      public final Thread thread;
      private final boolean isDebug;
      private int skyDarken;
