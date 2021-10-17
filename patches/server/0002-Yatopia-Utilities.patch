@@ -9,7 +9,6 @@ Co-authored-by: Ivan Pekov <ivan@mrivanplays.com>
 Original code by YatopiaMC, licensed under MIT
 You can find the original code on https://github.com/YatopiaMC/Yatopia
 
-
 diff --git a/build.gradle.kts b/build.gradle.kts
 index 9f4097571f416950625b5241e52c563db3f87afb..d68f96090e5637f0ee88b46c460f1a358c9eb949 100644
 --- a/build.gradle.kts
@@ -24,7 +23,7 @@ index 9f4097571f416950625b5241e52c563db3f87afb..d68f96090e5637f0ee88b46c460f1a35
          isTransitive = false
 diff --git a/src/main/java/org/itsriggyman/elytra/TimeUtils.java b/src/main/java/org/itsriggyman/elytra/TimeUtils.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..6aac96e4e4e312262faa281f23a52fd9f013c5b5
+index 0000000000000000000000000000000000000000..a83ea9efbf2f8dadc4efc893d8364c9ba2e483c9
 --- /dev/null
 +++ b/src/main/java/org/itsriggyman/elytra/TimeUtils.java
 @@ -0,0 +1,27 @@
@@ -71,7 +70,7 @@ index 0000000000000000000000000000000000000000..4d07c0463c86a37e4babfb45b28b6e67
 \ No newline at end of file
 diff --git a/src/main/java/org/itsriggyman/elytra/server/util/FastRandom.java b/src/main/java/org/itsriggyman/elytra/server/util/FastRandom.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..1bda325ec0eabaec992145e812785ddfd79d3e23
+index 0000000000000000000000000000000000000000..530427b6fee501e6dff9d277fb187bed55de8339
 --- /dev/null
 +++ b/src/main/java/org/itsriggyman/elytra/server/util/FastRandom.java
 @@ -0,0 +1,64 @@
