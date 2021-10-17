@@ -1,0 +1,89 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Isaac Clowes <riggyman@tutanota.com>
+Date: Sun, 17 Oct 2021 16:59:28 +0100
+Subject: [PATCH] Rebranding
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index fdc3f2390d8d0124102cbff386e8a981c6f92c22..9f4097571f416950625b5241e52c563db3f87afb 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -31,7 +31,7 @@ repositories {
+ }
+ 
+ dependencies {
+-    implementation(project(":Airplane-API")) // Airplane // Paper
++    implementation(project(":Elytra-API")) // Elytra // Airplane // Paper
+     implementation("io.papermc.paper:paper-mojangapi:1.17.1-R0.1-SNAPSHOT") // Airplane
+     // Paper start
+     implementation("org.jline:jline-terminal-jansi:3.12.1")
+diff --git a/src/main/java/com/destroystokyo/paper/Metrics.java b/src/main/java/com/destroystokyo/paper/Metrics.java
+index f5d01bce4d5547b4aeca96b7962b2090f47ea541..72b20433be8a400db0c5f00846ad7831e05af675 100644
+--- a/src/main/java/com/destroystokyo/paper/Metrics.java
++++ b/src/main/java/com/destroystokyo/paper/Metrics.java
+@@ -593,7 +593,7 @@ public class Metrics {
+             boolean logFailedRequests = config.getBoolean("logFailedRequests", false);
+             // Only start Metrics, if it's enabled in the config
+             if (config.getBoolean("enabled", true)) {
+-                Metrics metrics = new Metrics("Airplane", serverUUID, logFailedRequests, Bukkit.getLogger()); // Tuinity - we have our own bstats page // Airplane
++                Metrics metrics = new Metrics("Elytra", serverUUID, logFailedRequests, Bukkit.getLogger()); // Tuinity - we have our own bstats page // Airplane // Elytra
+ 
+                 metrics.addCustomChart(new Metrics.SimplePie("minecraft_version", () -> {
+                     String minecraftVersion = Bukkit.getVersion();
+@@ -603,7 +603,7 @@ public class Metrics {
+ 
+                 metrics.addCustomChart(new Metrics.SingleLineChart("players", () -> Bukkit.getOnlinePlayers().size()));
+                 metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? "online" : "offline"));
+-                metrics.addCustomChart(new Metrics.SimplePie("airplane_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Tuinity - we have our own bstats page // Airplane
++                metrics.addCustomChart(new Metrics.SimplePie("elytra_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Tuinity - we have our own bstats page // Airplane
+ 
+                 metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
+                     Map<String, Map<String, Integer>> map = new HashMap<>();
+diff --git a/src/main/java/gg/airplane/AirplaneVersionFetcher.java b/src/main/java/gg/airplane/AirplaneVersionFetcher.java
+index e79ec7919e6cf160fec1cb981d85f0f33c316b41..d485c0819dd21796b59f3e45328b9976c8e91d2c 100644
+--- a/src/main/java/gg/airplane/AirplaneVersionFetcher.java
++++ b/src/main/java/gg/airplane/AirplaneVersionFetcher.java
+@@ -32,7 +32,7 @@ public class AirplaneVersionFetcher implements VersionFetcher {
+     private static final HttpClient client = HttpClient.newHttpClient();
+ 
+     private static final URI JENKINS_URI = URI.create("https://ci.tivy.ca/job/Airplane-1.17/lastSuccessfulBuild/buildNumber");
+-    private static final String GITHUB_FORMAT = "https://api.github.com/repos/TECHNOVE/Airplane/compare/ver/1.17...%s";
++    private static final String GITHUB_FORMAT = "https://api.github.com/repos/ItsRiggyman/Elytra/compare/dev/1.17.1...%s";
+ 
+     private static final HttpResponse.BodyHandler<JsonObject> JSON_OBJECT_BODY_HANDLER = responseInfo -> HttpResponse.BodySubscribers.mapping(
+             HttpResponse.BodySubscribers.ofString(StandardCharsets.UTF_8),
+@@ -112,7 +112,7 @@ public class AirplaneVersionFetcher implements VersionFetcher {
+     private @NotNull Component getResponseMessage(final int versionDiff) {
+         return switch (Math.max(-1, Math.min(1, versionDiff))) {
+             case -1 ->
+-                text("You are running an unsupported version of Airplane.", RED);
++                text("You are running an unsupported version of Elytra.", RED);
+             case 0 ->
+                 text("You are on the latest version!", GREEN);
+             default ->
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index c80a600b72972c2e8b7d472e2e11c312adaa06e1..200ef28c158fea1a3262c07fdd58a66bf55cfb93 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -1721,7 +1721,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+ 
+     @DontObfuscate
+     public String getServerModName() {
+-        return "Airplane"; // Airplane // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
++        return "Elytra"; // Elytra // Airplane // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
+     }
+ 
+     public SystemReport fillSystemReport(SystemReport details) {
+diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+index 1788d79ea489e446d3d9f541693d4ba3dfc26015..72ae06dc93074b26245fcb86955d623e50c041ff 100644
+--- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+@@ -11,7 +11,7 @@ public final class Versioning {
+     public static String getBukkitVersion() {
+         String result = "Unknown-Version";
+ 
+-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/gg.airplane/airplane-api/pom.properties"); // Tuinity // Airplane
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/org.elytra/elytra-api/pom.properties"); // Tuinity // Airplane // Elytra
+         Properties properties = new Properties();
+ 
+         if (stream != null) {

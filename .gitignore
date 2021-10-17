@@ -1,0 +1,9 @@
+Elytra-API
+Elytra-Server
+
+last-tuinity
+build/
+.gradle/
+run/
+
+elytra-paperclip.jar
