@@ -1,8 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: Isaac Clowes <riggyman@tutanota.com>
-Date: Sun, 17 Oct 2021 20:40:45 +0100
+From: Simon Gardling <titaniumtown@gmail.com>
+Date: Thu, 8 Jul 2021 15:03:15 -0400
 Subject: [PATCH] (Jettpack) Use LinkedBlockingDeque in IAsyncTaskHandler
 
+Original code by Titaniumtown, licensed under GNU General Public License v3.0
+You can find the original code on https://gitlab.com/Titaniumtown/JettPack
 
 diff --git a/src/main/java/net/minecraft/util/thread/BlockableEventLoop.java b/src/main/java/net/minecraft/util/thread/BlockableEventLoop.java
 index dcce05d2f4ab16424db4ab103a12188e207a457b..92c98d065b76714b9a938e852b88763a1c6e7c12 100644
