@@ -85,7 +85,7 @@ index a1d810b61a909eaf93027dfe2d1a79ba3ca65efe..a58baccfc2abdcd139e3972b83ba2d66
  
      // Paper start
 -    public static Random SHARED_RANDOM = new Random() {
-+    public static Random SHARED_RANDOM = new org.elytra.itsriggyman.server.util.FastRandom() {
++    public static Random SHARED_RANDOM = new org.itsriggyman.elytra.server.util.FastRandom() {
          private boolean locked = false;
          @Override
          public synchronized void setSeed(long seed) {
