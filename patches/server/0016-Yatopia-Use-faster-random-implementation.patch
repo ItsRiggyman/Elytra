@@ -20,7 +20,7 @@ index 20cfe7b9b7127ddeb97aa91d759fc17b4a548eaf..1fde57835bc3787dc3e789ad15e5a315
      private long lastFill = -1;
      private long nextRefill = -1;
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 0dd6aaedfcc9c6aa454d5805cb43a2f24846bff2..4cb96699a62b155b315a66c8d12eb3cb703faef0 100644
+index 0dd6aaedfcc9c6aa454d5805cb43a2f24846bff2..bc5ca8fa7d1ec292690e8c87ced9eb95b1010567 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -411,7 +411,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -64,7 +64,7 @@ index a7ea776f5f8dad3dd9475de41209d8704c0886d3..77f628997e7d79b238e68599bd330d0e
          double d1 = (double) (center.y - maxRange);
          double d2 = (double) (center.x + maxRange);
 diff --git a/src/main/java/net/minecraft/server/network/ServerLoginPacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerLoginPacketListenerImpl.java
-index 494ca8fa8c742d4eac9fb11878d3b3170d850265..532e8a7db72751ef9e3b2fae93c150be1ab3a8b0 100644
+index 494ca8fa8c742d4eac9fb11878d3b3170d850265..4b2795d60a7fed33fc5374300bd27ff6a4a46e59 100644
 --- a/src/main/java/net/minecraft/server/network/ServerLoginPacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerLoginPacketListenerImpl.java
 @@ -52,7 +52,7 @@ public class ServerLoginPacketListenerImpl implements ServerLoginPacketListener
@@ -77,7 +77,7 @@ index 494ca8fa8c742d4eac9fb11878d3b3170d850265..532e8a7db72751ef9e3b2fae93c150be
      final MinecraftServer server;
      public final Connection connection;
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index a1d810b61a909eaf93027dfe2d1a79ba3ca65efe..4bded20d664dde988b29c4ae3f0d5e4453566ef0 100644
+index a1d810b61a909eaf93027dfe2d1a79ba3ca65efe..a58baccfc2abdcd139e3972b83ba2d666c89fadb 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -159,7 +159,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
@@ -90,7 +90,7 @@ index a1d810b61a909eaf93027dfe2d1a79ba3ca65efe..4bded20d664dde988b29c4ae3f0d5e44
          @Override
          public synchronized void setSeed(long seed) {
 diff --git a/src/main/java/net/minecraft/world/entity/monster/piglin/PiglinAi.java b/src/main/java/net/minecraft/world/entity/monster/piglin/PiglinAi.java
-index 7fa5cde9c26c21d4d800f720f373a8b702f4fcb5..80029c865e38bbdc7b512eae763d3996bec13e40 100644
+index 7fa5cde9c26c21d4d800f720f373a8b702f4fcb5..3071717f5cff05a95ed407b9b3db6ab9ca91f443 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/piglin/PiglinAi.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/piglin/PiglinAi.java
 @@ -378,7 +378,7 @@ public class PiglinAi {
@@ -103,7 +103,7 @@ index 7fa5cde9c26c21d4d800f720f373a8b702f4fcb5..80029c865e38bbdc7b512eae763d3996
  
      protected static boolean wantsToPickup(Piglin piglin, ItemStack stack) {
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTraderSpawner.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTraderSpawner.java
-index f8ede3588bfda9a7d4d5807311a3e9c2651fd0a3..ec05f12c7167bfb950f66ade3772fcd857780a73 100644
+index f8ede3588bfda9a7d4d5807311a3e9c2651fd0a3..47972ca8cb5154c2f0fcb8083e255a7c8ba9d321 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTraderSpawner.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTraderSpawner.java
 @@ -35,7 +35,7 @@ public class WanderingTraderSpawner implements CustomSpawner {
@@ -116,7 +116,7 @@ index f8ede3588bfda9a7d4d5807311a3e9c2651fd0a3..ec05f12c7167bfb950f66ade3772fcd8
      private int tickDelay;
      private int spawnDelay;
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
-index 5c16566f59535ce61fb3f747a745255cfaa439e8..2a5946caab4ee8e47bd5aaa2b2dba6b22985367d 100644
+index 5c16566f59535ce61fb3f747a745255cfaa439e8..b3d974b94cbecf378505537cca14206e3c81e408 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
 @@ -77,7 +77,7 @@ public class FishingHook extends Projectile {

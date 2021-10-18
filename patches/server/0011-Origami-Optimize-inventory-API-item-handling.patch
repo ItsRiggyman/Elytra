@@ -7,7 +7,7 @@ Original code by Minebench, licensed under GNU General Public License v3.0
 You can find the original code on https://github.com/Minebench/Origami
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java
-index 396a4ae3d5a829eda78ef98561333aea300aa722..9511091d9d9a1cac8a14b21c2daf8e0ad719d0a8 100644
+index 396a4ae3d5a829eda78ef98561333aea300aa722..bbc23e2d4f1113f2fbeed4afc8824a822da5fda5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java
 @@ -273,8 +273,6 @@ public class CraftInventory implements Inventory {
@@ -23,37 +23,35 @@ index 396a4ae3d5a829eda78ef98561333aea300aa722..9511091d9d9a1cac8a14b21c2daf8e0a
              if (cItem != null && cItem.getAmount() < cItem.getMaxStackSize() && cItem.isSimilar(filteredItem)) {
                  return i;
              }
-+        // Elytra start - Optimize inventory API (moved down from before null check)
-+		ItemStack[] inventory = this.getStorageContents();
-+		ItemStack filteredItem = CraftItemStack.asCraftCopy(item);
-+		// Elytra end
++            // Elytra start - Optimize inventory API (moved down from before null check)
++            ItemStack[] inventory = getStorageContents();
++            ItemStack filteredItem = CraftItemStack.asCraftCopy(item);
++            // Elytra end
          }
          return -1;
      }
-@@ -295,10 +297,11 @@ public class CraftInventory implements Inventory {
+@@ -295,9 +297,10 @@ public class CraftInventory implements Inventory {
          /* TODO: some optimization
           *  - Create a 'firstPartial' with a 'fromIndex'
           *  - Record the lastPartial per Material
 -         *  - Cache firstEmpty result
-+         *  - Cache firstEmpty result // Implemented in Origami
++         *  - Cache firstEmpty result // Implemented in Elytra
           */
  
--        for (int i = 0; i < items.length; i++) {
 +        int firstFree = -2; // Elytra - Cache firstEmpty result
-+		for (int i = 0; i < items.length; i++) {
+         for (int i = 0; i < items.length; i++) {
              ItemStack item = items[i];
              while (true) {
-                 // Do we already have a stack of it?
 @@ -307,7 +310,11 @@ public class CraftInventory implements Inventory {
                  // Drat! no partial stack
                  if (firstPartial == -1) {
                      // Find a free spot!
 -                    int firstFree = this.firstEmpty();
 +                    // Elytra start - Cache firstEmpty result
-+					if (firstFree == -2) {
-+						firstFree = this.firstEmpty();
-+					}
-+					// Elytra end
++                    if (firstFree == -2) {
++                        firstFree = firstEmpty();
++                    }
++                    // Elytra end
  
                      if (firstFree == -1) {
                          // No space at all!
