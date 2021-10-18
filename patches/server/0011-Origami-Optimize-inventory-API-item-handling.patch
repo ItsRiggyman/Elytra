@@ -7,10 +7,10 @@ Original code by Minebench, licensed under GNU General Public License v3.0
 You can find the original code on https://github.com/Minebench/Origami
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java
-index 396a4ae3d5a829eda78ef98561333aea300aa722..bbc23e2d4f1113f2fbeed4afc8824a822da5fda5 100644
+index 396a4ae3d5a829eda78ef98561333aea300aa722..e248c7fa0c4cd6276f55ee885d2ebf2502ffbb5a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java
-@@ -273,8 +273,6 @@ public class CraftInventory implements Inventory {
+@@ -273,11 +273,13 @@ public class CraftInventory implements Inventory {
      }
  
      private int firstPartial(ItemStack item) {
@@ -19,17 +19,13 @@ index 396a4ae3d5a829eda78ef98561333aea300aa722..bbc23e2d4f1113f2fbeed4afc8824a82
          if (item == null) {
              return -1;
          }
-@@ -283,6 +281,10 @@ public class CraftInventory implements Inventory {
++        // Elytra start - Optimize inventory API (moved down from before null check)
++        ItemStack[] inventory = getStorageContents();
++        ItemStack filteredItem = CraftItemStack.asCraftCopy(item);
++        // Elytra end
+         for (int i = 0; i < inventory.length; i++) {
+             ItemStack cItem = inventory[i];
              if (cItem != null && cItem.getAmount() < cItem.getMaxStackSize() && cItem.isSimilar(filteredItem)) {
-                 return i;
-             }
-+            // Elytra start - Optimize inventory API (moved down from before null check)
-+            ItemStack[] inventory = getStorageContents();
-+            ItemStack filteredItem = CraftItemStack.asCraftCopy(item);
-+            // Elytra end
-         }
-         return -1;
-     }
 @@ -295,9 +297,10 @@ public class CraftInventory implements Inventory {
          /* TODO: some optimization
           *  - Create a 'firstPartial' with a 'fromIndex'
