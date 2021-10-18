@@ -37,7 +37,7 @@ index 0dd6aaedfcc9c6aa454d5805cb43a2f24846bff2..4cb96699a62b155b315a66c8d12eb3cb
              // CraftBukkit start
              if (world.generator != null) {
 -                Random rand = new Random(world.getSeed());
-+                Random rand = new com.itsriggyman.elytra.server.util.FastRandom(world.getSeed());
++                Random rand = new org.itsriggyman.elytra.server.util.FastRandom(world.getSeed());
                  org.bukkit.Location spawn = world.generator.getFixedSpawnLocation(world.getWorld(), rand);
  
                  if (spawn != null) {
@@ -46,7 +46,7 @@ index 0dd6aaedfcc9c6aa454d5805cb43a2f24846bff2..4cb96699a62b155b315a66c8d12eb3cb
              // only do it if the generator did not
              BiomeSource worldchunkmanager = chunkgenerator.getBiomeSource();
 -            Random random = new Random(world.getSeed());
-+            Random random = new com.itsriggyman.elytra.server.util.FastRandom(world.getSeed());
++            Random random = new org.itsriggyman.elytra.server.util.FastRandom(world.getSeed());
              BlockPos blockposition = worldchunkmanager.findBiomeHorizontal(0, world.getSeaLevel(), 0, 256, (biomebase) -> {
                  return biomebase.getMobSettings().playerSpawnFriendly();
              }, random);
@@ -72,7 +72,7 @@ index 494ca8fa8c742d4eac9fb11878d3b3170d850265..532e8a7db72751ef9e3b2fae93c150be
      static final Logger LOGGER = LogManager.getLogger();
      private static final int MAX_TICKS_BEFORE_LOGIN = 600;
 -    private static final Random RANDOM = new Random();
-+    private static final Random RANDOM = new com.itsriggyman.elytra.server.util.FastRandom();
++    private static final Random RANDOM = new org.itsriggyman.elytra.server.util.FastRandom();
      private final byte[] nonce = new byte[4];
      final MinecraftServer server;
      public final Connection connection;
@@ -85,7 +85,7 @@ index a1d810b61a909eaf93027dfe2d1a79ba3ca65efe..4bded20d664dde988b29c4ae3f0d5e44
  
      // Paper start
 -    public static Random SHARED_RANDOM = new Random() {
-+    public static Random SHARED_RANDOM = new com.elytra.itsriggyman.server.util.FastRandom() {
++    public static Random SHARED_RANDOM = new org.elytra.itsriggyman.server.util.FastRandom() {
          private boolean locked = false;
          @Override
          public synchronized void setSeed(long seed) {
@@ -98,7 +98,7 @@ index 7fa5cde9c26c21d4d800f720f373a8b702f4fcb5..80029c865e38bbdc7b512eae763d3996
  
      private static boolean wantsToDance(LivingEntity piglin, LivingEntity target) {
 -        return target.getType() != EntityType.HOGLIN ? false : (new Random(piglin.level.getGameTime())).nextFloat() < 0.1F;
-+        return target.getType() != EntityType.HOGLIN ? false : (new com.itsriggyman.elytra.server.util.FastRandom(piglin.level.getGameTime())).nextFloat() < 0.1F;
++        return target.getType() != EntityType.HOGLIN ? false : (new org.itsriggyman.elytra.server.util.FastRandom(piglin.level.getGameTime())).nextFloat() < 0.1F;
      }
  
      protected static boolean wantsToPickup(Piglin piglin, ItemStack stack) {
@@ -111,7 +111,7 @@ index f8ede3588bfda9a7d4d5807311a3e9c2651fd0a3..ec05f12c7167bfb950f66ade3772fcd8
      private static final int SPAWN_ONE_IN_X_CHANCE = 10;
      private static final int NUMBER_OF_SPAWN_ATTEMPTS = 10;
 -    private final Random random = new Random();
-+    private final Random random = new com.itsriggyman.elytra.server.util.FastRandom();
++    private final Random random = new org.itsriggyman.elytra.server.util.FastRandom();
      private final ServerLevelData serverLevelData;
      private int tickDelay;
      private int spawnDelay;
@@ -124,7 +124,7 @@ index 5c16566f59535ce61fb3f747a745255cfaa439e8..2a5946caab4ee8e47bd5aaa2b2dba6b2
      private FishingHook(EntityType<? extends FishingHook> type, Level world, int lureLevel, int luckOfTheSeaLevel) {
          super(type, world);
 -        this.syncronizedRandom = new Random();
-+        this.syncronizedRandom = new com.itsriggyman.elytra.server.util.FastRandom();
++        this.syncronizedRandom = new org.itsriggyman.elytra.server.util.FastRandom();
          this.openWater = true;
          this.currentState = FishingHook.FishHookState.FLYING;
          this.noCulling = true;
