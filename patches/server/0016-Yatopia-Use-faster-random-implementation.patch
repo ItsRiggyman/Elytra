@@ -20,7 +20,7 @@ index 20cfe7b9b7127ddeb97aa91d759fc17b4a548eaf..1fde57835bc3787dc3e789ad15e5a315
      private long lastFill = -1;
      private long nextRefill = -1;
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 0dd6aaedfcc9c6aa454d5805cb43a2f24846bff2..bc5ca8fa7d1ec292690e8c87ced9eb95b1010567 100644
+index 3547ad303b345adde05f14de454a9a967e8f4ea7..18d2808d9efaf6be545983b5e4ae4cff11ab11ac 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -411,7 +411,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -32,7 +32,7 @@ index 0dd6aaedfcc9c6aa454d5805cb43a2f24846bff2..bc5ca8fa7d1ec292690e8c87ced9eb95
          this.port = -1;
          this.levels = Maps.newLinkedHashMap(); // CraftBukkit - keep order, k+v already use identity methods
          this.running = true;
-@@ -773,7 +773,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -778,7 +778,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              // Paper start - moved down
              // CraftBukkit start
              if (world.generator != null) {
@@ -41,7 +41,7 @@ index 0dd6aaedfcc9c6aa454d5805cb43a2f24846bff2..bc5ca8fa7d1ec292690e8c87ced9eb95
                  org.bukkit.Location spawn = world.generator.getFixedSpawnLocation(world.getWorld(), rand);
  
                  if (spawn != null) {
-@@ -789,7 +789,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -794,7 +794,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              // Paper start - if the generator created a spawn for us, then there is no need for us to also create a spawn -
              // only do it if the generator did not
              BiomeSource worldchunkmanager = chunkgenerator.getBiomeSource();
@@ -77,7 +77,7 @@ index 494ca8fa8c742d4eac9fb11878d3b3170d850265..4b2795d60a7fed33fc5374300bd27ff6
      final MinecraftServer server;
      public final Connection connection;
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index a1d810b61a909eaf93027dfe2d1a79ba3ca65efe..a58baccfc2abdcd139e3972b83ba2d666c89fadb 100644
+index a1d810b61a909eaf93027dfe2d1a79ba3ca65efe..239a3e3fce9c818d28f81e026978e2c264c45886 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -159,7 +159,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n

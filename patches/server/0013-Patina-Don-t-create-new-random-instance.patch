@@ -7,10 +7,10 @@ Original code by PatinaMC, licensed under GNU General Public License v3.0
 You can find the original code on https://github.com/PatinaMC/Patina
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index e4d2dec4651b972f724a57f61ba3b21e3a51a96f..0dd6aaedfcc9c6aa454d5805cb43a2f24846bff2 100644
+index db7004c0d569e18aacc089a898dc3a6025e958ef..3547ad303b345adde05f14de454a9a967e8f4ea7 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -647,7 +647,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -652,7 +652,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
              if (worlddimension == null) {
                  dimensionmanager = (DimensionType) this.registryHolder.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrThrow(DimensionType.OVERWORLD_LOCATION);
@@ -97,10 +97,10 @@ index 57b12ba5a24e68b0a0420d692946fe5e83974db4..3f787c04e3981fcb6564b2bebf60e5e9
          if (!s1.isEmpty()) {
              try {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index c987e7c46afe6c41339e8e08bf2bfabe8c1ba098..f73dfecc43b163062766904c0a87b51786708734 100644
+index ae2c4388eddef529fba5d5eae354ee15c6e36c9d..4e9704d7eb7c32ae5375582538ff64e22556a4ab 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1193,7 +1193,7 @@ public final class CraftServer implements Server {
+@@ -1210,7 +1210,7 @@ public final class CraftServer implements Server {
  
          if (worlddimension == null) {
              dimensionmanager = (DimensionType) console.registryHolder.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrThrow(DimensionType.OVERWORLD_LOCATION);

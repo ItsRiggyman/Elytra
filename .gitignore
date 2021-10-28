@@ -6,4 +6,9 @@ build/
 .gradle/
 run/
 
+.classpath
+.project
+.settings/
+.vscode/
+
 elytra-paperclip.jar
