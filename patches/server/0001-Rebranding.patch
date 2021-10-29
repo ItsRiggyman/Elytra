@@ -76,19 +76,6 @@ index e0b1f0671d16ddddcb6725acd25a1d1d69e42701..0fc452d12f05969bcbe5595d1adb925a
                  .variable(LineReader.HISTORY_FILE, java.nio.file.Paths.get(".console_history"))
                  .completer(new ConsoleCommandCompleter(this.server))
                  .option(LineReader.Option.COMPLETE_IN_WORD, true);
-diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 4e9704d7eb7c32ae5375582538ff64e22556a4ab..9ed7fc7e3b6af1aff403fb90b95c19d311824274 100644
---- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-+++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -251,7 +251,7 @@ import javax.annotation.Nullable; // Paper
- import javax.annotation.Nonnull; // Paper
- 
- public final class CraftServer implements Server {
--    private final String serverName = "Airplane"; // Paper // Airplane
-+    private final String serverName = "Elytra"; // Paper // Airplane // Elytra
-     private final String serverVersion;
-     private final String bukkitVersion = Versioning.getBukkitVersion();
-     private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/gg/airplane/AirplaneVersionFetcher.java b/src/main/java/gg/airplane/AirplaneVersionFetcher.java
 deleted file mode 100644
 index e79ec7919e6cf160fec1cb981d85f0f33c316b41..0000000000000000000000000000000000000000
@@ -245,6 +232,19 @@ index 49821f441886b4de2cac5b1b13981e2161992f98..38b6bc585e907598c75bc030bb164996
      }
  
      public SystemReport fillSystemReport(SystemReport details) {
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index ae2c4388eddef529fba5d5eae354ee15c6e36c9d..7df144e724428745301f1fd3fdca32fcb7cf69f3 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -251,7 +251,7 @@ import javax.annotation.Nullable; // Paper
+ import javax.annotation.Nonnull; // Paper
+ 
+ public final class CraftServer implements Server {
+-    private final String serverName = "Airplane"; // Paper // Airplane
++    private final String serverName = "Elytra"; // Paper // Airplane // Elytra
+     private final String serverVersion;
+     private final String bukkitVersion = Versioning.getBukkitVersion();
+     private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 index 25bb190bf7e08539a3590ee35a01f1d816e48d83..46f06c3c6b361f8455ef451ed2baa200bbbc0317 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
