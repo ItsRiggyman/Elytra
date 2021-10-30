@@ -143,6 +143,15 @@ index 4b2795d60a7fed33fc5374300bd27ff6a4a46e59..59a31c63c001409065362522ef9d6746
                  @Override
                  public void run() {
                      try {
+@@ -291,7 +294,7 @@ public class ServerLoginPacketListenerImpl implements ServerLoginPacketListener
+         }
+ 
+         // Paper start - Cache authenticator threads
+-        authenticatorPool.execute(new Runnable() {
++        MCUtil.asyncExecutor.execute(new Runnable() { // Elytra
+             public void run() {
+                 GameProfile gameprofile = ServerLoginPacketListenerImpl.this.gameProfile;
+ 
 @@ -425,7 +428,7 @@ public class ServerLoginPacketListenerImpl implements ServerLoginPacketListener
              this.gameProfile = com.destroystokyo.paper.proxy.VelocityProxy.createProfile(buf);
  
