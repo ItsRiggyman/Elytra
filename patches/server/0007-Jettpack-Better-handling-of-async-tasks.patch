@@ -1,8 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: Isaac Clowes <isaacgamingclowes@gmail.com>
-Date: Fri, 29 Oct 2021 13:45:20 +0100
+From: Simon Gardling <titaniumtown@gmail.com>
+Date: Thu, 8 Jul 2021 15:03:15 -0400
 Subject: [PATCH] (Jettpack) Better handling of async tasks
 
+Original code by Titaniumtown, licensed under GNU General Public License v3.0
+You can find the original code on https://gitlab.com/Titaniumtown/JettPack
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
 index b7c24a7ff4dc50d03f74b21a0b353d0ce559b4d4..9b48ae82c337e9af7a11222aca75e1ca46dfccd9 100644
@@ -26,10 +28,10 @@ index b7c24a7ff4dc50d03f74b21a0b353d0ce559b4d4..9b48ae82c337e9af7a11222aca75e1ca
  
      private void sendAsync(ServerPlayer player) {
 diff --git a/src/main/java/net/minecraft/server/MCUtil.java b/src/main/java/net/minecraft/server/MCUtil.java
-index f9701ef4162868894a81f0d1ac9b58d00d9a2d65..6f5788f30aabddb24cb26faa494b901d0d5ebe3e 100644
+index b5be0486d1cffe60808948b4b0bfd709664b2ae4..fd67ce9015933ed561ccbd11b1e20235709ad515 100644
 --- a/src/main/java/net/minecraft/server/MCUtil.java
 +++ b/src/main/java/net/minecraft/server/MCUtil.java
-@@ -52,11 +52,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
+@@ -53,11 +53,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
  import java.util.function.BiConsumer;
  import java.util.function.Consumer;
  import java.util.function.Supplier;
@@ -47,7 +49,7 @@ index f9701ef4162868894a81f0d1ac9b58d00d9a2d65..6f5788f30aabddb24cb26faa494b901d
          new ThreadFactoryBuilder().setNameFormat("Paper Async Task Handler Thread - %1$d").build()
      );
      public static final ThreadPoolExecutor cleanerExecutor = new ThreadPoolExecutor(
-@@ -67,6 +71,30 @@ public final class MCUtil {
+@@ -68,6 +72,30 @@ public final class MCUtil {
  
      public static final long INVALID_CHUNK_KEY = getCoordinateKey(Integer.MAX_VALUE, Integer.MAX_VALUE);
  
@@ -79,7 +81,7 @@ index f9701ef4162868894a81f0d1ac9b58d00d9a2d65..6f5788f30aabddb24cb26faa494b901d
      public static Runnable once(Runnable run) {
          AtomicBoolean ran = new AtomicBoolean(false);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 18d2808d9efaf6be545983b5e4ae4cff11ab11ac..5882f54a8a45a8916e7ffaa578c6854c341fe13f 100644
+index 35d7328cac935a939d2855341491a1972af39967..2c302c014efecb44429f8c80d09b0e2fc44ff0fd 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -368,6 +368,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -90,7 +92,7 @@ index 18d2808d9efaf6be545983b5e4ae4cff11ab11ac..5882f54a8a45a8916e7ffaa578c6854c
          co.aikar.timings.MinecraftTimings.midTickChunkTasks.startTiming();
          try {
              for (;;) {
-@@ -1113,6 +1114,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1111,6 +1112,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          LOGGER.info("Flushing Chunk IO");
          com.destroystokyo.paper.io.PaperFileIOThread.Holder.INSTANCE.close(true, true); // Paper
          LOGGER.info("Closing Thread Pool");
@@ -98,7 +100,7 @@ index 18d2808d9efaf6be545983b5e4ae4cff11ab11ac..5882f54a8a45a8916e7ffaa578c6854c
          Util.shutdownExecutors(); // Paper
          LOGGER.info("Closing Server");
          try {
-@@ -1534,6 +1536,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1530,6 +1532,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
          // Paper start - move executeAll() into full server tick timing
          try (co.aikar.timings.Timing ignored = MinecraftTimings.processTasksTimer.startTiming()) {
@@ -107,7 +109,7 @@ index 18d2808d9efaf6be545983b5e4ae4cff11ab11ac..5882f54a8a45a8916e7ffaa578c6854c
          }
          // Paper end
 diff --git a/src/main/java/net/minecraft/server/network/ServerLoginPacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerLoginPacketListenerImpl.java
-index 4b2795d60a7fed33fc5374300bd27ff6a4a46e59..59a31c63c001409065362522ef9d6746854c6a0e 100644
+index 494ca8fa8c742d4eac9fb11878d3b3170d850265..35fc551ad25d45b1bad081d9ee5adea49ee5bfbb 100644
 --- a/src/main/java/net/minecraft/server/network/ServerLoginPacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerLoginPacketListenerImpl.java
 @@ -46,6 +46,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;

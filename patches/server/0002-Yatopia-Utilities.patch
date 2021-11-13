@@ -10,10 +10,10 @@ Original code by YatopiaMC, licensed under MIT
 You can find the original code on https://github.com/YatopiaMC/Yatopia
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index aa7f4dd0fc3319f477586e05a578955998de5d00..0cdc94ed7ed5f3261af78c1e113a56a8daf3075c 100644
+index 42337dfa5800f94d108a363e09d6d572b8db1fc1..5856da4230e474eeb11308b1e2cf15f67a4a772c 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -43,6 +43,7 @@ dependencies {
+@@ -40,6 +40,7 @@ dependencies {
      implementation("org.apache.logging.log4j:log4j-api:2.14.1") // Paper
      implementation("org.ow2.asm:asm:9.2")
      implementation("org.ow2.asm:asm-commons:9.2") // Paper - ASM event executor generation

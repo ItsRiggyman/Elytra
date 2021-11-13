@@ -7,10 +7,10 @@ Original code by PatinaMC, licensed under GNU General Public License v3.0
 You can find the original code on https://github.com/PatinaMC/Patina
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index db7004c0d569e18aacc089a898dc3a6025e958ef..3547ad303b345adde05f14de454a9a967e8f4ea7 100644
+index ccf41ddcfaaf906b593cf79566d7951c27a1f23f..05e60cc636f954c656fdec377e5e00e54e6eba85 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -652,7 +652,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -653,7 +653,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
              if (worlddimension == null) {
                  dimensionmanager = (DimensionType) this.registryHolder.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrThrow(DimensionType.OVERWORLD_LOCATION);
@@ -20,7 +20,7 @@ index db7004c0d569e18aacc089a898dc3a6025e958ef..3547ad303b345adde05f14de454a9a96
                  dimensionmanager = worlddimension.type();
                  chunkgenerator = worlddimension.generator();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 11f46c1b8f4c8414e0667d1873542c17d6e01f2a..3d095cd4ebc1ed5ec6a962ec6329c2cf6e0a307a 100644
+index 78fda0c982810b8b881a87099f355247566e513a..a76f9ddf2166c2a3e917ffe7e8dda05660592944 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -372,7 +372,7 @@ public class ServerPlayer extends Player {
@@ -97,7 +97,7 @@ index 57b12ba5a24e68b0a0420d692946fe5e83974db4..3f787c04e3981fcb6564b2bebf60e5e9
          if (!s1.isEmpty()) {
              try {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index ae2c4388eddef529fba5d5eae354ee15c6e36c9d..4e9704d7eb7c32ae5375582538ff64e22556a4ab 100644
+index 2a091496ab616540ed69de61139caa670efead03..74707695f3408fe9aab09212c71cc71c9d68da4a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1210,7 +1210,7 @@ public final class CraftServer implements Server {
