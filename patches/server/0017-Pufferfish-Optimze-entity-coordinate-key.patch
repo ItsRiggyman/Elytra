@@ -3,9 +3,6 @@ From: Kevin Raneri <kevin.raneri@gmail.com>
 Date: Tue, 9 Nov 2021 14:33:16 -0500
 Subject: [PATCH] (Pufferfish) Optimze entity coordinate key
 
-Original code by Pufferfish Studios LLC, licensed under GNU General Public License v3.0
-You can find the original code on https://github.com/pufferfish-gg/Pufferfish
-
 When executing getCoordinateKey for entities (a hotpath), the JVM is
 required to repeatedly cast doubles to longs. The performance impact of
 this depends on the CPU architecture, but generally switching between

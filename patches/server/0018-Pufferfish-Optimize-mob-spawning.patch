@@ -1,0 +1,242 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Kevin Raneri <kevin.raneri@gmail.com>
+Date: Tue, 9 Nov 2021 14:33:16 -0500
+Subject: [PATCH] (Pufferfish) Optimize mob spawning
+
+Original code by Pufferfish Studios LLC , licensed under GNU General Public License v3.0
+You can find the original code on https://gitlab.com/pufferfish-gg/pufferfish
+
+This patch aims to reduce the main-thread impact of mob spawning by
+offloading as much work as possible to other threads. It is possible for
+inconsistencies to come up, but when they happen they never interfere
+with the server's operation (they don't produce errors), and side
+effects are limited to more or less mobs being spawned in any particular
+tick.
+
+It is possible to disable this optimization if it is not required or if
+it interferes with any plugins. On servers with thousands of entities,
+this can result in performance gains of up to 15%, which is significant
+and, in my opinion, worth the low risk of minor mob-spawning-related
+inconsistencies.
+
+diff --git a/src/main/java/com/destroystokyo/paper/util/PlayerMobDistanceMap.java b/src/main/java/com/destroystokyo/paper/util/PlayerMobDistanceMap.java
+index 72063ba7fb0d04594043cb07034590d597c3d77e..f63688faf981cca93f1d02486bef3746aa619d60 100644
+--- a/src/main/java/com/destroystokyo/paper/util/PlayerMobDistanceMap.java
++++ b/src/main/java/com/destroystokyo/paper/util/PlayerMobDistanceMap.java
+@@ -18,7 +18,7 @@ public final class PlayerMobDistanceMap {
+ 
+     private final Map<ServerPlayer, SectionPos> players = new HashMap<>();
+     // we use linked for better iteration.
+-    private final Long2ObjectOpenHashMap<PooledHashSets.PooledObjectLinkedOpenHashSet<ServerPlayer>> playerMap = new Long2ObjectOpenHashMap<>(32, 0.5f);
++    private final java.util.concurrent.ConcurrentHashMap<Long, PooledHashSets.PooledObjectLinkedOpenHashSet<ServerPlayer>> playerMap = new java.util.concurrent.ConcurrentHashMap<>(32, 0.5f); // Elytra
+     private int viewDistance;
+ 
+     private final PooledHashSets<ServerPlayer> pooledHashSets = new PooledHashSets<>();
+@@ -75,8 +75,8 @@ public final class PlayerMobDistanceMap {
+         final int centerX = currPosition.getX();
+         final int centerZ = currPosition.getZ();
+ 
+-        for (final Long2ObjectLinkedOpenHashMap.Entry<PooledHashSets.PooledObjectLinkedOpenHashSet<ServerPlayer>> entry : this.playerMap.long2ObjectEntrySet()) {
+-            final long key = entry.getLongKey();
++        for (final Map.Entry<Long, PooledHashSets.PooledObjectLinkedOpenHashSet<ServerPlayer>> entry : this.playerMap.entrySet()) { // Elytra
++            final long key = entry.getKey(); // Elytra
+             final PooledHashSets.PooledObjectLinkedOpenHashSet<ServerPlayer> map = entry.getValue();
+ 
+             if (map.referenceCount == 0) {
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 148046ef73be8cb7f61eab7804aaf0e7a790d560..ba31bd5d7be46a9fd7c767756b93ae55be0693d0 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -313,6 +313,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+     public volatile Thread shutdownThread; // Paper
+     public volatile boolean abnormalExit = false; // Paper
+ 
++    public org.itsriggyman.elytra.server.util.AsyncExecutor mobSpawnExecutor = new org.itsriggyman.elytra.server.util.AsyncExecutor("MobSpawning", () -> true); // Elytra - optimize mob spawning
++
+     public static <S extends MinecraftServer> S spin(Function<Thread, S> serverFactory) {
+         AtomicReference<S> atomicreference = new AtomicReference();
+         Thread thread = new Thread(() -> {
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index 7a4d7c382b2a1e60450bbbd55d98141e1e05feb7..6374e6f0b5f7aa179cc8724fa83b07fe92e4d678 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -351,6 +351,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+                 DedicatedServer.LOGGER.info("JMX monitoring enabled");
+             }
+ 
++            mobSpawnExecutor.start(); // Elytra
+             return true;
+         }
+     }
+diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
+index 35f27e9a7c82eaec5b4a1a71696dac8485b2cd6d..77652e1cf2f6c6ee98e700e11eb16f03651be416 100644
+--- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
++++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
+@@ -74,6 +74,9 @@ public class ServerChunkCache extends ChunkSource {
+ 
+     private final LevelChunk[] lastLoadedChunks = new LevelChunk[4 * 4];
+ 
++    public boolean firstRunSpawnCounts = true; // Elytra
++    public final java.util.concurrent.atomic.AtomicBoolean _pufferfish_spawnCountsReady = new java.util.concurrent.atomic.AtomicBoolean(false); // E;ytra - optimize countmobs
++
+     private static int getChunkCacheKey(int x, int z) {
+         return x & 3 | ((z & 3) << 2);
+     }
+@@ -997,18 +1000,23 @@ public class ServerChunkCache extends ChunkSource {
+                 this.level.timings.playerMobDistanceMapUpdate.startTiming();
+                 this.chunkMap.playerMobDistanceMap.update(this.level.players, this.chunkMap.viewDistance);
+                 this.level.timings.playerMobDistanceMapUpdate.stopTiming();
++                // Elytra start - moved down when async processing
+                 // re-set mob counts
+                 for (ServerPlayer player : this.level.players) {
+                     Arrays.fill(player.mobCounts, 0);
+                 }
+-                spawnercreature_d = NaturalSpawner.createState(l, this.level.getAllEntities(), this::getFullChunk, true);
++                lastSpawnState = NaturalSpawner.createState(l, this.level.getAllEntities(), this::getFullChunk, true);
++                // Elytra end
+             } else {
+-                spawnercreature_d = NaturalSpawner.createState(l, this.level.getAllEntities(), this::getFullChunk, false);
++                // Elytra start - this is only implemented for per-player mob spawning so this makes everything work if this setting is disabled.
++                lastSpawnState = NaturalSpawner.createState(l, this.level.getAllEntities(), this::getFullChunk, false);
++                _pufferfish_spawnCountsReady.set(true);
++                // Elytra end
+             }
+             // Paper end
+             this.level.timings.countNaturalMobs.stopTiming(); // Paper - timings
+ 
+-            this.lastSpawnState = spawnercreature_d;
++            //this.lastSpawnState = spawnercreature_d; // Elytra - this is managed asynchronously
+             this.level.getProfiler().pop();
+             // Paper - moved down, enabled if per-player = false
+             // Paper - moved natural spawn event up
+@@ -1041,8 +1049,8 @@ public class ServerChunkCache extends ChunkSource {
+ 
+                     if ((true || this.level.isPositionEntityTicking(chunkcoordintpair)) && !this.chunkMap.isOutsideOfRange(playerchunk, chunkcoordintpair, false)) { // Paper - optimise isOutsideOfRange // Paper - we only iterate entity ticking chunks
+                         chunk.setInhabitedTime(chunk.getInhabitedTime() + j);
+-                        if (flag1 && (this.spawnEnemies || this.spawnFriendlies) && this.level.getWorldBorder().isWithinBounds(chunk.getPos()) && !this.chunkMap.isOutsideOfRange(playerchunk, chunkcoordintpair, true)) { // Spigot // Paper - optimise isOutsideOfRange
+-                            NaturalSpawner.spawnForChunk(this.level, chunk, spawnercreature_d, this.spawnFriendlies, this.spawnEnemies, flag2);
++                        if (flag1 && _pufferfish_spawnCountsReady.get() && (this.spawnEnemies || this.spawnFriendlies) && this.level.getWorldBorder().isWithinBounds(chunk.getPos()) && !this.chunkMap.isOutsideOfRange(playerchunk, chunkcoordintpair, true)) { // Spigot // Paper - optimise isOutsideOfRange // Elytra
++                            NaturalSpawner.spawnForChunk(this.level, chunk, lastSpawnState, this.spawnFriendlies, this.spawnEnemies, flag2); // Elytra
+                         }
+ 
+                         // this.level.timings.doTickTiles.startTiming(); // Spigot // Paper
+@@ -1088,6 +1096,9 @@ public class ServerChunkCache extends ChunkSource {
+             }
+         }
+         // Paper end - controlled flush for entity tracker packets
++
++        // Elytra start - optimize mob spawning
++        // Elytra end
+     }
+ 
+     private void getFullChunk(long pos, Consumer<LevelChunk> chunkConsumer) {
+diff --git a/src/main/java/net/minecraft/world/level/NaturalSpawner.java b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
+index dc613142603fca4cf5c8e47c084e1439d0450424..c18ff67467707f5a7d352d4fa490a3e30f0f73bc 100644
+--- a/src/main/java/net/minecraft/world/level/NaturalSpawner.java
++++ b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
+@@ -167,7 +167,7 @@ public final class NaturalSpawner {
+             int difference = k1 - currEntityCount;
+ 
+             if (world.paperConfig.perPlayerMobSpawns) {
+-                int minDiff = Integer.MAX_VALUE;
++                int minDiff = true ? difference : Integer.MAX_VALUE; // Pufferfish - optimize mob spawning
+                 for (ServerPlayer entityplayer : world.getChunkSource().chunkMap.playerMobDistanceMap.getPlayersInRange(chunk.getPos())) {
+                     minDiff = Math.min(limit - world.getChunkSource().chunkMap.getMobCountNear(entityplayer, enumcreaturetype), minDiff);
+                 }
+diff --git a/src/main/java/net/minecraft/world/level/entity/EntityTickList.java b/src/main/java/net/minecraft/world/level/entity/EntityTickList.java
+index 4814e719e0b898464692075170889fdb2729a26a..f7bfd00eb76dd3e17dd66708d750d138c2746863 100644
+--- a/src/main/java/net/minecraft/world/level/entity/EntityTickList.java
++++ b/src/main/java/net/minecraft/world/level/entity/EntityTickList.java
+@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
+ import net.minecraft.world.entity.Entity;
+ 
+ public class EntityTickList {
+-    private final io.papermc.paper.util.maplist.IteratorSafeOrderedReferenceSet<Entity> entities = new io.papermc.paper.util.maplist.IteratorSafeOrderedReferenceSet<>(true); // Paper - rewrite this, always keep this updated - why would we EVER tick an entity that's not ticking?
++    public final io.papermc.paper.util.maplist.IteratorSafeOrderedReferenceSet<Entity> entities = new io.papermc.paper.util.maplist.IteratorSafeOrderedReferenceSet<>(true); // Paper - rewrite this, always keep this updated - why would we EVER tick an entity that's not ticking? // Elytra - private->public
+ 
+     private void ensureActiveIsNotIterated() {
+         // Paper - replace with better logic, do not delay removals
+diff --git a/src/main/java/org/itsriggyman/elytra/server/util/AsyncExecutor.java b/src/main/java/org/itsriggyman/elytra/server/util/AsyncExecutor.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..857f08ec2af3e119fd4f2b5d0b4017ed62e61a34
+--- /dev/null
++++ b/src/main/java/org/itsriggyman/elytra/server/util/AsyncExecutor.java
+@@ -0,0 +1,51 @@
++package org.itsriggyman.elytra.server.util;
++
++import com.google.common.collect.Queues;
++import gg.pufferfish.pufferfish.PufferfishLogger;
++import java.util.Queue;
++import java.util.concurrent.locks.LockSupport;
++import java.util.function.BooleanSupplier;
++import java.util.logging.Level;
++
++public class AsyncExecutor implements Runnable {
++	
++	private Queue<Runnable> jobs = Queues.newConcurrentLinkedQueue();
++	private final Thread thread;
++	private final BooleanSupplier shouldRun;
++	private volatile boolean killswitch = false;
++	
++	public AsyncExecutor(String threadName, BooleanSupplier shouldRun) {
++		this.thread = new Thread(this, threadName);
++		this.shouldRun = shouldRun;
++	}
++	
++	public void start() {
++		thread.start();
++	}
++	
++	public void kill() {
++		killswitch = true;
++	}
++	
++	public void submit(Runnable runnable) {
++		jobs.offer(runnable);
++	}
++	
++	@Override
++	public void run() {
++		while (!killswitch) {
++			if (shouldRun.getAsBoolean()) {
++				try {
++					Runnable runnable;
++					while ((runnable = jobs.poll()) != null) {
++						runnable.run();
++					}
++				} catch (Exception e) {
++					PufferfishLogger.LOGGER.log(Level.SEVERE, e, () -> "Failed to execute async job for thread "  thread.getName());
++				}
++			}
++			LockSupport.parkNanos("executing tasks", 1000L);
++		}
++	}
++	
++}
+\ No newline at end of file
+diff --git a/src/main/java/org/itsriggyman/elytra/server/util/IterableWrapper.java b/src/main/java/org/itsriggyman/elytra/server/util/IterableWrapper.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..cb24c7ac3906712965dcf3bdb22451220ef40163
+--- /dev/null
++++ b/src/main/java/org/itsriggyman/elytra/server/util/IterableWrapper.java
+@@ -0,0 +1,20 @@
++package org.itsriggyman.elytra.server.util;
++
++import java.util.Iterator;
++import org.jetbrains.annotations.NotNull;
++
++public class IterableWrapper<T> implements Iterable<T> {
++
++	private final Iterator<T> iterator;
++
++	public IterableWrapper(Iterator<T> iterator) {
++		this.iterator = iterator;
++	}
++
++	@NotNull
++	@Override
++	public Iterator<T> iterator() {
++		return iterator;
++	}
++
++}

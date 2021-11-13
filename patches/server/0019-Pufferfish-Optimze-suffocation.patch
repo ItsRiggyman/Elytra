@@ -1,10 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Kevin Raneri <kevin.raneri@gmail.com>
 Date: Tue, 9 Nov 2021 14:33:16 -0500
-Subject: [PATCH] (Pufferfish) Optimze entity coordinate key
+Subject: [PATCH] (Pufferfish) Optimze suffocation
 
-Original code by Pufferfish Studios LLC, licensed under GNU General Public License v3.0
-You can find the original code on https://github.com/pufferfish-gg/Pufferfish
+Original code by Pufferfish Studios LLC , licensed under GNU General Public License v3.0
+You can find the original code on https://gitlab.com/pufferfish-gg/pufferfish
 
 The isInWall check to determine suffocation is quite expensive, and
 often is completely unnecessary to check. We do two things here to
