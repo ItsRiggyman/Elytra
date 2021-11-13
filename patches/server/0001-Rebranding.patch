@@ -1,23 +1,25 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: Isaac Clowes <isaacgamingclowes@gmail.com>
-Date: Thu, 28 Oct 2021 14:23:59 +0100
+From: Isaac Clowes <riggyman@tutanota.com>
+Date: Sat, 13 Nov 2021 10:46:09 +0000
 Subject: [PATCH] Rebranding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 0bd09bd56968660437a94ec078a13ee78339fa0e..a88ef82f000ff8e80407df6d4a7225955f42ac18 100644
+index fd3528be3d90733e826bcbeae967b95cedf92dfe..42337dfa5800f94d108a363e09d6d572b8db1fc1 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -25,7 +25,7 @@ repositories {
+@@ -22,8 +22,8 @@ repositories {
  }
  
  dependencies {
 -    implementation(project(":Airplane-API")) // Airplane // Paper
+-    implementation("io.papermc.paper:paper-mojangapi:1.17.1-R0.1-SNAPSHOT") // Airplane
 +    implementation(project(":Elytra-API")) // Elytra // Airplane // Paper
-     implementation("io.papermc.paper:paper-mojangapi:1.17.1-R0.1-SNAPSHOT") // Airplane
++    implementation("io.papermc.paper:paper-mojangapi:1.17.1-R0.1-SNAPSHOT") // Elytra
      // Paper start
-     implementation("org.jline:jline-terminal-jansi:3.12.1")
-@@ -86,7 +86,7 @@ tasks.jar {
+     implementation("org.jline:jline-terminal-jansi:3.21.0")
+     implementation("net.minecrell:terminalconsoleappender:1.3.0")
+@@ -82,7 +82,7 @@ tasks.jar {
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
              "Implementation-Version" to "git-Paper-$implementationVersion",
@@ -220,7 +222,7 @@ index e79ec7919e6cf160fec1cb981d85f0f33c316b41..00000000000000000000000000000000
 -    }
 -}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 49821f441886b4de2cac5b1b13981e2161992f98..38b6bc585e907598c75bc030bb164996b55ebc2e 100644
+index ee0c53740cf412c1275f229a321e2f22dff38113..35d7328cac935a939d2855341491a1972af39967 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1726,7 +1726,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
