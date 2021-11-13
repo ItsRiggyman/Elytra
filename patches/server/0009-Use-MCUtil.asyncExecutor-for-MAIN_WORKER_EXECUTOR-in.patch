@@ -1,7 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Simon Gardling <titaniumtown@gmail.com>
 Date: Thu, 8 Jul 2021 17:03:31 -0400
-Subject: [PATCH] Use MCUtil.asyncExecutor for MAIN_WORKER_EXECUTOR in SystemUtils
+Subject: [PATCH] Use MCUtil.asyncExecutor for MAIN_WORKER_EXECUTOR in
+ SystemUtils
 
 Original code by Titaniumtown, licensed under GNU General Public License v3.0
 You can find the original code on https://gitlab.com/Titaniumtown/JettPack
