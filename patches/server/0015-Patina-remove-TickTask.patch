@@ -1,0 +1,89 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Thu, 1 Jul 2021 11:54:44 +0000
+Subject: [PATCH] (Patina) remove TickTask
+
+Original code by PatinaMC, licensed under GNU General Public License v3.0
+You can find the original code on https://github.com/PatinaMC/Patina
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 5121dfa61eb8fd224efbb6e5b428cf15f8b479b8..075dc0d0ada26b6b16ad49ab24182f9cd14279ff 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -186,7 +186,7 @@ import org.bukkit.event.server.ServerLoadEvent;
+ import co.aikar.timings.MinecraftTimings; // Paper
+ import org.spigotmc.SlackActivityAccountant; // Spigot
+ 
+-public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTask> implements CommandSource, AutoCloseable {
++public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnable> implements CommandSource, AutoCloseable {
+ 
+     private static MinecraftServer SERVER; // Paper
+     public static final Logger LOGGER = LogManager.getLogger();
+@@ -1369,19 +1369,21 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+     }
+ 
+     @Override
+-    public TickTask wrapRunnable(Runnable runnable) {
++    public Runnable wrapRunnable(Runnable runnable) { // Elytra
+         // Paper start - anything that does try to post to main during watchdog crash, run on watchdog
+         if (this.hasStopped && Thread.currentThread().equals(shutdownThread)) {
+             runnable.run();
+             runnable = () -> {};
+         }
+         // Paper end
+-        return new TickTask(this.tickCount, runnable);
++        return runnable; // Elytra
+     }
+ 
++    /* // Patina
+     protected boolean shouldRun(TickTask ticktask) {
+         return ticktask.getTick() + 3 < this.tickCount || this.haveTime();
+     }
++    */
+ 
+     @Override
+     public boolean pollTask() {
+@@ -1412,10 +1414,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         }
+     }
+ 
++    /*
+     public void doRunTask(TickTask ticktask) { // CraftBukkit - decompile error
+         this.getProfiler().incrementCounter("runTask");
+         super.doRunTask(ticktask);
+     }
++    */
+ 
+     private void updateStatusIcon(ServerStatus metadata) {
+         Optional<File> optional = Optional.of(this.getFile("server-icon.png")).filter(File::isFile);
+diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
+index 406bfe20a7b8786bbc6bee46151be91dadec6180..d77db49a8dafd49492e9e551dbb8f020a87c5b4c 100644
+--- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
++++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
+@@ -1262,10 +1262,12 @@ public class ServerChunkCache extends ChunkSource {
+             return runnable;
+         }
+ 
++        /* // Elytra
+         @Override
+         protected boolean shouldRun(Runnable task) {
+             return true;
+         }
++        */
+ 
+         @Override
+         protected boolean scheduleExecutables() {
+diff --git a/src/main/java/net/minecraft/util/thread/BlockableEventLoop.java b/src/main/java/net/minecraft/util/thread/BlockableEventLoop.java
+index dcce05d2f4ab16424db4ab103a12188e207a457b..5fb2c3ad7c6b73def8202faddca0742bef37f515 100644
+--- a/src/main/java/net/minecraft/util/thread/BlockableEventLoop.java
++++ b/src/main/java/net/minecraft/util/thread/BlockableEventLoop.java
+@@ -29,7 +29,9 @@ public abstract class BlockableEventLoop<R extends Runnable> implements Profiler
+ 
+     protected abstract R wrapRunnable(Runnable runnable);
+ 
++    /* // Elytra
+     protected abstract boolean shouldRun(R task);
++    */
+ 
+     public boolean isSameThread() {
+         return Thread.currentThread() == this.getRunningThread();
