@@ -1,0 +1,38 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: 2No2Name <2No2Name@web.de>
+Date: Tue, 21 Dec 2021 09:43:24 -0500
+Subject: [PATCH] (Lithium) collections.gamerules
+
+Original code by Lithium, licensed under GNU Lesser General Public License v3.0
+You can find the original code on https://github.com/CaffeineMC/lithium-fabric
+
+diff --git a/src/main/java/net/minecraft/world/level/GameRules.java b/src/main/java/net/minecraft/world/level/GameRules.java
+index 6c9e574851b518242dbbee9bce954b44dbaeecb6..b1540997946b9eecd2064b0ab86099754ab89cbb 100644
+--- a/src/main/java/net/minecraft/world/level/GameRules.java
++++ b/src/main/java/net/minecraft/world/level/GameRules.java
+@@ -27,6 +27,7 @@ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.server.level.ServerPlayer;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
++import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap; // Elytra
+ 
+ public class GameRules {
+ 
+@@ -110,14 +111,14 @@ public class GameRules {
+ 
+     public GameRules() {
+         // Pufferfish start - use this to ensure gameruleArray is initialized
+-        this((Map) GameRules.GAME_RULE_TYPES.entrySet().stream().collect(ImmutableMap.toImmutableMap(Entry::getKey, (entry) -> {
++        this.rules = new Object2ObjectOpenHashMap<>((Map) GameRules.GAME_RULE_TYPES.entrySet().stream().collect(ImmutableMap.toImmutableMap(Entry::getKey, (entry) -> {
+             return ((GameRules.Type) entry.getValue()).createRule();
+-        })));
++        }))); // Elytra - lithium: store gamerules in fastutil hashmap 
+         // Pufferfish end
+     }
+ 
+     private GameRules(Map<GameRules.Key<?>, GameRules.Value<?>> rules) {
+-        this.rules = rules;
++        this.rules = new Object2ObjectOpenHashMap<>(rules); // Elytra - lithium: store gamerules in fastutil hashmap 
+ 
+         // Pufferfish start
+         int arraySize = rules.keySet().stream().mapToInt(key -> key.gameRuleIndex).max().orElse(-1) + 1;
