@@ -6,36 +6,6 @@ Subject: [PATCH] (Origami) Optimize inventory API item handling
 Original code by Minebench, licensed under GNU General Public License v3.0
 You can find the original code on https://github.com/Minebench/Origami
 
-diff --git a/src/main/java/net/minecraft/world/level/GameRules.java b/src/main/java/net/minecraft/world/level/GameRules.java
-index b1540997946b9eecd2064b0ab86099754ab89cbb..6c9e574851b518242dbbee9bce954b44dbaeecb6 100644
---- a/src/main/java/net/minecraft/world/level/GameRules.java
-+++ b/src/main/java/net/minecraft/world/level/GameRules.java
-@@ -27,7 +27,6 @@ import net.minecraft.server.MinecraftServer;
- import net.minecraft.server.level.ServerPlayer;
- import org.apache.logging.log4j.LogManager;
- import org.apache.logging.log4j.Logger;
--import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap; // Elytra
- 
- public class GameRules {
- 
-@@ -111,14 +110,14 @@ public class GameRules {
- 
-     public GameRules() {
-         // Pufferfish start - use this to ensure gameruleArray is initialized
--        this.rules = new Object2ObjectOpenHashMap<>((Map) GameRules.GAME_RULE_TYPES.entrySet().stream().collect(ImmutableMap.toImmutableMap(Entry::getKey, (entry) -> {
-+        this((Map) GameRules.GAME_RULE_TYPES.entrySet().stream().collect(ImmutableMap.toImmutableMap(Entry::getKey, (entry) -> {
-             return ((GameRules.Type) entry.getValue()).createRule();
--        }))); // Elytra - lithium: store gamerules in fastutil hashmap 
-+        })));
-         // Pufferfish end
-     }
- 
-     private GameRules(Map<GameRules.Key<?>, GameRules.Value<?>> rules) {
--        this.rules = new Object2ObjectOpenHashMap<>(rules); // Elytra - lithium: store gamerules in fastutil hashmap 
-+        this.rules = rules;
- 
-         // Pufferfish start
-         int arraySize = rules.keySet().stream().mapToInt(key -> key.gameRuleIndex).max().orElse(-1) + 1;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java
 index 396a4ae3d5a829eda78ef98561333aea300aa722..e248c7fa0c4cd6276f55ee885d2ebf2502ffbb5a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java
