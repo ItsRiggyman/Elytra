@@ -1,7 +1,6 @@
-Elytra-API
-Elytra-Server
+elytra-api
+elytra-server
 
-last-tuinity
 build/
 .gradle/
 run/

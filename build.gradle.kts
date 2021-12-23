@@ -71,8 +71,8 @@ paperweight {
             apiPatchDir.set(layout.projectDirectory.dir("patches/api"))
             serverPatchDir.set(layout.projectDirectory.dir("patches/server"))
 
-            apiOutputDir.set(layout.projectDirectory.dir("elytra-api"))
-            serverOutputDir.set(layout.projectDirectory.dir("elytra-server"))
+            apiOutputDir.set(layout.projectDirectory.dir("Elytra-API"))
+            serverOutputDir.set(layout.projectDirectory.dir("Elytra-Server"))
         }
     }
 }

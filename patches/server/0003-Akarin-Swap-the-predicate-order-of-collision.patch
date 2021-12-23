@@ -1,0 +1,31 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=E3=84=97=E3=84=A0=CB=8B=20=E3=84=91=E3=84=A7=CB=8A?=
+ <tsao-chi@the-lingo.org>
+Date: Fri, 10 Apr 2020 15:47:15 +0800
+Subject: [PATCH] (Akarin) Swaps the predicate order of collision
+
+Original code by Akarin-project, licensed under GNU General Public License v3.0
+You can find the original code on https://github.com/Akarin-project/Akarin
+
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index 335ac54bef892db6b9fe66d0a7c3966abda84350..2e4d8c2cd1efb9326df1c3f80f3f5c6644260637 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -1850,8 +1850,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, i
+     public void playerTouch(Player player) {}
+ 
+     public void push(Entity entity) {
+-        if (!this.isPassengerOfSameVehicle(entity)) {
+-            if (!entity.noPhysics && !this.noPhysics) {
++        if (!entity.noPhysics && !this.noPhysics && !this.isPassengerOfSameVehicle(entity)) { // Akarin - Swap the predicate order of collision
+                 if (this.level.paperConfig.onlyPlayersCollide && !(entity instanceof ServerPlayer || this instanceof ServerPlayer)) return; // Paper
+                 double d0 = entity.getX() - this.getX();
+                 double d1 = entity.getZ() - this.getZ();
+@@ -1880,7 +1879,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, i
+                     }
+                 }
+ 
+-            }
+         }
+     }
+ 
