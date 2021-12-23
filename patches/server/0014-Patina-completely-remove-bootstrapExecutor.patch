@@ -19,6 +19,18 @@ index cf73e9780f638ea55a636dcef022617839121a6c..a74f9146b7ba4aeefa93e3750086aac8
      private static final ExecutorService BACKGROUND_EXECUTOR = makeExecutor("Main", -1); // Paper - add -1 priority
      // Paper start - don't submit BLOCKING PROFILE LOOKUPS to the world gen thread
      public static final ExecutorService PROFILE_EXECUTOR = Executors.newFixedThreadPool(2, new java.util.concurrent.ThreadFactory() {
+@@ -196,9 +196,11 @@ public class Util {
+         return 255;
+     }
+ 
++    /*
+     public static ExecutorService bootstrapExecutor() {
+         return BOOTSTRAP_EXECUTOR;
+     }
++    */
+ 
+     public static ExecutorService backgroundExecutor() {
+         return BACKGROUND_EXECUTOR;
 diff --git a/src/main/java/net/minecraft/util/datafix/DataFixers.java b/src/main/java/net/minecraft/util/datafix/DataFixers.java
 index b08d32bc80b4a65ebb980366a3e717c3b0e1bdab..04f9015296887010037981b1e43abafaa6535297 100644
 --- a/src/main/java/net/minecraft/util/datafix/DataFixers.java
