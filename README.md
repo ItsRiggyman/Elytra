@@ -1,6 +1,9 @@
 # Elytra
 A fork of Pufferfish optimized for better performance (unstable and shouldn't be used in a production environment).
- 
+
+ # ***Downloads***
+ Download the latest version from [releases](https://github.com/ItsRiggyman/Elytra/releases).
+
  # ***Building***
  To build Elytra from source, run: ```./gradlew applyPatches```
  
