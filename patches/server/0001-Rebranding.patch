@@ -5,7 +5,7 @@ Subject: [PATCH] Rebranding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index f690bf2cd3319e689c80d271ae354f93c70f6baa..6f802d689b2571b2db8bc5d0f274f1c6e8074575 100644
+index f690bf2cd3319e689c80d271ae354f93c70f6baa..13f8bb6b9e356a442d9aaf220dcd19b6daf5a7a1 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -18,7 +18,7 @@ repositories {
