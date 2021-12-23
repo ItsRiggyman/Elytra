@@ -13,7 +13,7 @@ index f690bf2cd3319e689c80d271ae354f93c70f6baa..6f802d689b2571b2db8bc5d0f274f1c6
  
  dependencies {
 -    implementation(project(":pufferfish-api")) // Pufferfish // Paper
-+    implementation(project(":Elytra-API")) // Elytra // Pufferfish // Paper
++    implementation(project(":elytra-api")) // Elytra // Pufferfish // Paper
      // Pufferfish start
      implementation("io.papermc.paper:paper-mojangapi:1.18.1-R0.1-SNAPSHOT") {
          exclude("io.papermc.paper", "paper-api")
