@@ -7,28 +7,27 @@ Original code by Titaniumtown, licensed under GNU General Public License v3.0
 You can find the original code on https://gitlab.com/Titaniumtown/JettPack
 
 diff --git a/src/main/java/net/minecraft/server/MCUtil.java b/src/main/java/net/minecraft/server/MCUtil.java
-index 74003e8887624736b154807e07835c315e836cf3..698115facf822c11daed7d41fd821b031098cbda 100644
+index f99d189f461921d37581e2fc1382af60921b0660..4076e52206bfd0b68122907ffafaf0bbe7124d68 100644
 --- a/src/main/java/net/minecraft/server/MCUtil.java
 +++ b/src/main/java/net/minecraft/server/MCUtil.java
-@@ -53,11 +53,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
+@@ -53,11 +53,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
  import java.util.function.BiConsumer;
  import java.util.function.Consumer;
  import java.util.function.Supplier;
 +import java.util.concurrent.SynchronousQueue; // Elytra
 +import java.util.concurrent.ConcurrentLinkedQueue; // Elytra
-+
  
  public final class MCUtil {
 +    public static final ConcurrentLinkedQueue smallAsyncTasks = new ConcurrentLinkedQueue(); // Elytra
      public static final ThreadPoolExecutor asyncExecutor = new ThreadPoolExecutor(
 -        0, 2, 60L, TimeUnit.SECONDS,
--        new LinkedBlockingQueue<Runnable>(),
+-        new LinkedBlockingQueue<>(),
 +        4, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, // Elytra
 +        new SynchronousQueue<Runnable>(), // Elytra
-         new ThreadFactoryBuilder().setNameFormat("Paper Async Task Handler Thread - %1$d").build()
-     );
-     public static final ThreadPoolExecutor cleanerExecutor = new ThreadPoolExecutor(
-@@ -68,6 +72,31 @@ public final class MCUtil {
+         new ThreadFactoryBuilder()
+             .setNameFormat("Paper Async Task Handler Thread - %1$d")
+             .setUncaughtExceptionHandler(new net.minecraft.DefaultUncaughtExceptionHandlerWithName(MinecraftServer.LOGGER))
+@@ -74,6 +77,30 @@ public final class MCUtil {
  
      public static final long INVALID_CHUNK_KEY = getCoordinateKey(Integer.MAX_VALUE, Integer.MAX_VALUE);
  
@@ -56,7 +55,6 @@ index 74003e8887624736b154807e07835c315e836cf3..698115facf822c11daed7d41fd821b03
 +        }
 +    }
 +    // Elytra end
-+
  
      public static Runnable once(Runnable run) {
          AtomicBoolean ran = new AtomicBoolean(false);
@@ -156,17 +154,17 @@ index 3c1992e212a6d6f1db4d5b807b38d71913619fc0..64c053dd16e6557b837973bd715dac6d
  import java.util.concurrent.ThreadPoolExecutor;
  import java.util.concurrent.TimeUnit;
 +*/
-+import net.minecraft.server.MCUtil;
++import net.minecraft.server.MCUtil; // Elytra
  
  public class CraftAsyncScheduler extends CraftScheduler {
  
 +    /*
      private final ThreadPoolExecutor executor = new ThreadPoolExecutor(
              4, Integer.MAX_VALUE,30L, TimeUnit.SECONDS, new SynchronousQueue<>(),
-             new ThreadFactoryBuilder().setNameFormat("Craft Scheduler Thread - %1$d").build());
+             new ThreadFactoryBuilder().setNameFormat("Craft Scheduler Thread - %1$d").setUncaughtExceptionHandler(new net.minecraft.DefaultUncaughtExceptionHandlerWithName(net.minecraft.server.MinecraftServer.LOGGER)).build()); // Paper
 +    */
      private final Executor management = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder()
-             .setNameFormat("Craft Async Scheduler Management Thread").build());
+             .setNameFormat("Craft Async Scheduler Management Thread").setUncaughtExceptionHandler(new net.minecraft.DefaultUncaughtExceptionHandlerWithName(net.minecraft.server.MinecraftServer.LOGGER)).build()); // Paper
      private final List<CraftTask> temp = new ArrayList<>();
  
      CraftAsyncScheduler() {
