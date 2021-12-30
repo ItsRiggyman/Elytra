@@ -24,6 +24,51 @@ index b09c12805771a756c0661d4ffcd7888817056db8..cf73e9780f638ea55a636dcef0226178
  
  public class Util {
      static final Logger LOGGER = LogManager.getLogger();
+@@ -151,7 +155,43 @@ public class Util {
+         if (i <= 0) {
+             executorService = MoreExecutors.newDirectExecutorService();
+         } else {
+-            executorService = new java.util.concurrent.ThreadPoolExecutor(i, i,0L, TimeUnit.MILLISECONDS, new java.util.concurrent.LinkedBlockingQueue<Runnable>(), target -> new net.minecraft.server.ServerWorkerThread(target, s, priorityModifier));
++            executorService = Integer.getInteger("Paper.WorkerThreadCount", i) <= 0 ? MoreExecutors.newDirectExecutorService() : new AbstractExecutorService(){
++                    private volatile boolean shutdown = false;
++                
++                    @Override
++                    public final List<Runnable> shutdownNow() {
++                        this.shutdown = true;
++                        return Collections.emptyList();
++                    }
++                
++                    @Override
++                    public final void shutdown() {
++                        this.shutdown = true;
++                    }
++                
++                    @Override
++                    public final boolean isShutdown() {
++                        return this.shutdown;
++                    }
++                
++                    @Override
++                    public final boolean isTerminated() {
++                        return this.shutdown;
++                    }
++                
++                    @Override
++                    public final boolean awaitTermination(long l2, TimeUnit timeUnit) throws InterruptedException {
++                        if (!this.shutdown) {
++                            throw new UnsupportedOperationException();
++                        }
++                        return true;
++                    }
++                
++                    @Override
++                    public final void execute(Runnable runnable) {
++                        MCUtil.asyncExecutor.execute(new ServerWorkerWrapper(runnable));
++                    }
++            };
+         }
+         /*
+                     @Override
 diff --git a/src/main/java/net/minecraft/server/ServerWorkerWrapper.java b/src/main/java/net/minecraft/server/ServerWorkerWrapper.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..2fe6dbd6f120650cca76adf5887f16e82d4efae9
