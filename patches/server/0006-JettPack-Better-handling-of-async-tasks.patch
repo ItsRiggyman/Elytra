@@ -142,7 +142,7 @@ index 33a29890435d6065a2cc4f8e8bf8209c01d5d114..b049976c7d14b26dc9067d5d7a30c304
                      new LoginHandler().fireEvents();
                  } catch (Exception ex) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftAsyncScheduler.java b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftAsyncScheduler.java
-index 3c1992e212a6d6f1db4d5b807b38d71913619fc0..64c053dd16e6557b837973bd715dac6d5cae9306 100644
+index 9c1aff17aabd062640e3f451a2ef8c50a7c62f10..49bacd2ef2e27394631ac0a2999bb67c8b563403 100644
 --- a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftAsyncScheduler.java
 +++ b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftAsyncScheduler.java
 @@ -32,23 +32,30 @@ import java.util.Iterator;

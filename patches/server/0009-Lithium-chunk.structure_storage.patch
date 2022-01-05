@@ -87,7 +87,7 @@ index 5aeaaae6f15050a2da271fe196d0a234ecafc8a1..932e834062490155a12f9957b0fe895d
      }
  
 diff --git a/src/main/java/net/minecraft/world/level/chunk/storage/ChunkSerializer.java b/src/main/java/net/minecraft/world/level/chunk/storage/ChunkSerializer.java
-index 300c95a3839954b9e631aa4d76c131a5c2d96394..8af8d4e92135772c2b78f48a46fb7735d4fd4edb 100644
+index 8246204ce5d8f825c7796f87006e658d7a019876..63f2957d4894aa28dfa232c22e39be502705ac2e 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/storage/ChunkSerializer.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/storage/ChunkSerializer.java
 @@ -64,6 +64,10 @@ import net.minecraft.world.ticks.LevelChunkTicks;
@@ -101,7 +101,7 @@ index 300c95a3839954b9e631aa4d76c131a5c2d96394..8af8d4e92135772c2b78f48a46fb7735
  
  public class ChunkSerializer {
      // Paper start
-@@ -73,6 +77,48 @@ public class ChunkSerializer {
+@@ -79,6 +83,48 @@ public class ChunkSerializer {
      }
      // Paper end
  
@@ -150,7 +150,7 @@ index 300c95a3839954b9e631aa4d76c131a5c2d96394..8af8d4e92135772c2b78f48a46fb7735
      public static final Codec<PalettedContainer<BlockState>> BLOCK_STATE_CODEC = PalettedContainer.codec(Block.BLOCK_STATE_REGISTRY, BlockState.CODEC, PalettedContainer.Strategy.SECTION_STATES, Blocks.AIR.defaultBlockState(), null); // Paper - Anti-Xray - Add preset block states
      private static final Logger LOGGER = LogManager.getLogger();
      private static final String TAG_UPGRADE_DATA = "UpgradeData";
-@@ -676,7 +722,7 @@ public class ChunkSerializer {
+@@ -682,7 +728,7 @@ public class ChunkSerializer {
          }
  
          nbttagcompound.put("Heightmaps", nbttagcompound3);
