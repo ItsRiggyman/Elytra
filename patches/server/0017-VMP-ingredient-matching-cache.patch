@@ -6,6 +6,8 @@ Subject: [PATCH] (VMP) ingredient matching cache
 Original code by RelativityMC, licensed under MIT
 You can find the original code on https://github.com/RelativityMC/VMP-fabric
 
+Copyright (c) 2021-2022 ishland
+
 diff --git a/src/main/java/net/minecraft/world/item/crafting/Ingredient.java b/src/main/java/net/minecraft/world/item/crafting/Ingredient.java
 index 8f35445477507bbec3c0cb1dccfd888316951595..8aa084eaf2e509b781518b656a6ec6930d44f480 100644
 --- a/src/main/java/net/minecraft/world/item/crafting/Ingredient.java

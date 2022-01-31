@@ -7,10 +7,10 @@ Original code by Lithium, licensed under GNU Lesser General Public License v3.0
 You can find the original code on https://github.com/CaffeineMC/lithium-fabric
 
 diff --git a/src/main/java/net/minecraft/core/Direction.java b/src/main/java/net/minecraft/core/Direction.java
-index 6d883db5c04cbcf454952c0f361029ecbfe4f037..a5b74e0746aea9015dbd8bf9745cadcfb994cf14 100644
+index acc9f17feb2fda56d35742735e0f6362052a9ce6..ddd4b292e16b180d7b7368759994cc1367e3154e 100644
 --- a/src/main/java/net/minecraft/core/Direction.java
 +++ b/src/main/java/net/minecraft/core/Direction.java
-@@ -191,7 +191,7 @@ public enum Direction implements StringRepresentable {
+@@ -197,7 +197,7 @@ public enum Direction implements StringRepresentable {
      }
  
      public Direction getOpposite() {
@@ -19,7 +19,7 @@ index 6d883db5c04cbcf454952c0f361029ecbfe4f037..a5b74e0746aea9015dbd8bf9745cadcf
      }
  
      public Direction getClockWise(Direction.Axis axis) {
-@@ -441,7 +441,7 @@ public enum Direction implements StringRepresentable {
+@@ -447,7 +447,7 @@ public enum Direction implements StringRepresentable {
      }
  
      public static Direction getRandom(Random random) {

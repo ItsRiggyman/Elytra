@@ -10,10 +10,10 @@ Co-authored-by: ishland <ishlandmc@yeah.net>
 The goal of this patch is to reduce I/O operations from the main thread while saving player data and also to avoid too many I/O operations while reading NBT Player file by using a cache (Which start to delete the oldest data when there is too much player compared to the map size)
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 6582bd7edd5359c3021f8e2515f16fab2c99890c..a4a7ffb14c2e61eb1c5b46ac3704bd3e77515b55 100644
+index 1014fe929af77a2b38cd4c245b3f0737fd929969..67cee68c946939ed081665e320f7da8fd92e4c74 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1087,7 +1087,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1088,7 +1088,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          }
          // Spigot start
          MCUtil.asyncExecutor.shutdown(); // Paper
