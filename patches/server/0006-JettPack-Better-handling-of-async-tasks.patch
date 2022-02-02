@@ -9,7 +9,7 @@ You can find the original code on https://gitlab.com/Titaniumtown/JettPack
 Replaces niche/one time use threadpools in other areas by instead using `asyncExecutor` in `MCUtil` This patch also adds a system of flushing small async tasks (hence the variable name of `smallAsyncTasks`) in the `asyncExecutor` threadpool.
 
 diff --git a/src/main/java/net/minecraft/server/MCUtil.java b/src/main/java/net/minecraft/server/MCUtil.java
-index f99d189f461921d37581e2fc1382af60921b0660..3f813e85a63bb0d131d2b5b99b93dfd7b061c937 100644
+index d6a57cdad2c92521a800cb18d060d9d6d627a8c0..3a82d136246815e4cca8f10d55f038d0d41b993a 100644
 --- a/src/main/java/net/minecraft/server/MCUtil.java
 +++ b/src/main/java/net/minecraft/server/MCUtil.java
 @@ -53,11 +53,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
@@ -62,7 +62,7 @@ index f99d189f461921d37581e2fc1382af60921b0660..3f813e85a63bb0d131d2b5b99b93dfd7
      public static Runnable once(Runnable run) {
          AtomicBoolean ran = new AtomicBoolean(false);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 425257919092dc7762aa7777b43dea9fd0a01e7d..1dbf1ac1e9c3a7dbad048e3f53ff9e385b4edf82 100644
+index acce4eef0132812fe12d842d7619cf27acd11694..906d147ca904e7b759e0a9a8182099b02a6e5ec8 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -372,6 +372,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -81,7 +81,7 @@ index 425257919092dc7762aa7777b43dea9fd0a01e7d..1dbf1ac1e9c3a7dbad048e3f53ff9e38
          Util.shutdownExecutors(); // Paper
          LOGGER.info("Closing Server");
          try {
-@@ -1517,6 +1519,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1521,6 +1523,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          io.papermc.paper.util.CachedLists.reset(); // Paper
          // Paper start - move executeAll() into full server tick timing
          try (co.aikar.timings.Timing ignored = MinecraftTimings.processTasksTimer.startTiming()) {

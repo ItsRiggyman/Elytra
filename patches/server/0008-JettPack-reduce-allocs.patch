@@ -219,10 +219,10 @@ index ea68b26e506e48d8238b7ee4266e61b211d52bd2..5d7d160a1e575903999c00da9faf5359
  
      public double getDouble(int index) {
 diff --git a/src/main/java/net/minecraft/network/Connection.java b/src/main/java/net/minecraft/network/Connection.java
-index 81dde0efc1a06420c0791520b9e40b24dd1f0318..371dd89f91f5b53e7d31155e22a4f29be37f9f5f 100644
+index 7b8f9cf06833860d0fc02399822e6aea214883ed..1caa987e2f03203379fb2f798d38d2240665fa00 100644
 --- a/src/main/java/net/minecraft/network/Connection.java
 +++ b/src/main/java/net/minecraft/network/Connection.java
-@@ -282,7 +282,7 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
+@@ -304,7 +304,7 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
      }
  
      public void setListener(PacketListener listener) {
@@ -245,10 +245,10 @@ index e2c8f716af55ebb7e4233c2a3d6515f8f4a239fa..2f5c021b6849acb81064d55418707921
          OptionSpec<Integer> optionspec11 = optionparser.accepts("port").withRequiredArg().ofType(Integer.class).defaultsTo(-1, new Integer[0]);
          OptionSpec<String> optionspec12 = optionparser.accepts("serverId").withRequiredArg();
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 1dbf1ac1e9c3a7dbad048e3f53ff9e385b4edf82..1014fe929af77a2b38cd4c245b3f0737fd929969 100644
+index 906d147ca904e7b759e0a9a8182099b02a6e5ec8..b794a259194854ed242422fb3446ee0cba0662ee 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1428,8 +1428,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1429,8 +1429,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              try {
                  BufferedImage bufferedimage = ImageIO.read(file);
  
@@ -273,10 +273,10 @@ index e80176708db486190dd527e3ade5fc690ceb39f7..b2fbb63945923968dfcf513ce1c98d2d
  
              for (int j = 0; j < i; ++j) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 8cdacd7ed9a26e6757eeff89545fde21ddb80fd2..75b885da98b308ed8894fc95e604076d8593461e 100644
+index 59d57108f38f38e03cd8b69a53c3e9d40179599a..a0857991d64d89874fea552a5459a45f14529034 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -846,7 +846,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -849,7 +849,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
                      BlockPos blockposition2 = blockposition.set(j + randomX, randomY, k + randomZ);
                      BlockState iblockdata = com.destroystokyo.paper.util.maplist.IBlockDataList.getBlockDataFromRaw(raw);
  
@@ -285,7 +285,7 @@ index 8cdacd7ed9a26e6757eeff89545fde21ddb80fd2..75b885da98b308ed8894fc95e604076d
                      // We drop the fluid tick since LAVA is ALREADY TICKED by the above method (See LiquidBlock).
                      // TODO CHECK ON UPDATE
                  }
-@@ -1099,7 +1099,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1102,7 +1102,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
  
      public static List<Entity> getCurrentlyTickingEntities() {
          Entity ticking = currentlyTickingEntity.get();
@@ -317,7 +317,7 @@ index 3125af569ec2bb1cd613a9dd96c3a181d723006d..dfa46f0b3b665d9f00ad56ced57e3575
                  }
  
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index f9189eb5bad615b67ff7b7c0e014472f104e38fa..4a9383b7ea01d83c6f917d1656435b274735b1c5 100644
+index af07d8dcaff7fe51e439bbb3f278dbf5c1c639e5..4394bfb93a79601785a5e5e31a25a6c410bcdee3 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -362,7 +362,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -345,7 +345,7 @@ index f9189eb5bad615b67ff7b7c0e014472f104e38fa..4a9383b7ea01d83c6f917d1656435b27
              return;
          }
          // Paper end
-@@ -2927,7 +2927,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2933,7 +2933,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
          // Paper start
          if (!org.bukkit.Bukkit.isPrimaryThread()) {
              if (recipeSpamPackets.addAndGet(com.destroystokyo.paper.PaperConfig.autoRecipeIncrement) > com.destroystokyo.paper.PaperConfig.autoRecipeLimit) {
@@ -377,7 +377,7 @@ index 469795ab183d74c323c1ed0f1cd2a28d10aa4a3d..d3efa187fefdd9b46754ff581f3cdda3
  
          final String s;
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index cd08f9b16c065be8f0eacaeba51d3e72d332daf9..6c579ce129df0ad3625a0701192ed92f5f19ed82 100644
+index 7a0c1ba40156df69bbbf36d96bed0950130d2351..7f64fdda4811542c49cbddb0faad565989447258 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -316,7 +316,7 @@ public abstract class PlayerList {
@@ -438,7 +438,7 @@ index c82bb38b5b1c9204daef21455723d21509ad1c44..338093ae122e72c6c1f322980917019e
          this.type = type;
          this.index = entityId;
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index a6681690e1e556440320c492bf2a8e617008baa1..64767ba3d837a8b4359280cd5ed8a84107059374 100644
+index 3236a1dc51c394b784d3f42b78e76bf7c2f69c37..a5003556a5940e024aaa69680224edfc976ac52a 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -3020,7 +3020,7 @@ public abstract class LivingEntity extends Entity {
@@ -592,7 +592,7 @@ index 2f9f15d99f8b31e9f13f7f32378b2a9e09bcb5e5..aa565ab33700c92ca607463bdc0dcaef
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 90aa1d75b5c23e5ee27ceae9f6ef90de913a6601..a04c4e17ff41803b9611814f622559f3daa0649e 100644
+index a98d115b7dccd836fa2c0f50333730db6f388aff..af2be422c2392d09fceb3089fd4717c00519f50f 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -111,7 +111,6 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -612,7 +612,7 @@ index 90aa1d75b5c23e5ee27ceae9f6ef90de913a6601..a04c4e17ff41803b9611814f622559f3
          }
          return slices.getChunkEntities();
      }
-@@ -1299,7 +1298,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -1304,7 +1303,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
  
      public int getBestNeighborSignal(BlockPos pos) {
          int i = 0;
@@ -989,10 +989,10 @@ index c9c18cf84e4ee5c253bbc64a4b41e91f9f4c4bc7..d8962c4dfe82297ca67bee3cad235dc5
              j = aenumdirection1.length;
  
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-index 05c46f3b3bce5225b819d86e6e06729a5093e092..b7c4f2144fae2ceadcdfd94f7e3948d9ceef4a4a 100644
+index eac017fc521bfd1391e75db8628f42b28329d681..d39f3466be8bbfb71ccdccd173837c565da7df7d 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-@@ -1080,7 +1080,7 @@ public abstract class BlockBehaviour {
+@@ -1115,7 +1115,7 @@ public abstract class BlockBehaviour {
  
          private static final class Cache {
  
@@ -1001,7 +1001,7 @@ index 05c46f3b3bce5225b819d86e6e06729a5093e092..b7c4f2144fae2ceadcdfd94f7e3948d9
              private static final int SUPPORT_TYPE_COUNT = SupportType.values().length;
              protected final boolean solidRender;
              final boolean propagatesSkylightDown;
-@@ -1120,7 +1120,7 @@ public abstract class BlockBehaviour {
+@@ -1155,7 +1155,7 @@ public abstract class BlockBehaviour {
                  if (!this.collisionShape.isEmpty() && block.getOffsetType() != BlockBehaviour.OffsetType.NONE) {
                      throw new IllegalStateException(String.format("%s has a collision shape and an offset type, but is not marked as dynamicShape in its properties.", Registry.BLOCK.getKey(block)));
                  } else {
