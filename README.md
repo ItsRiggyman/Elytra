@@ -1,5 +1,7 @@
-# Elytra
-A fork of Pufferfish optimized for better performance (unstable and shouldn't be used in a production environment).
+# This is an experimental fork and should absolutely not be used in a production environment
+
+## Elytra
+A fork of Pufferfish optimized for better performance.
 
  # ***Downloads***
  Download the latest version from [releases](https://github.com/ItsRiggyman/Elytra/releases).
