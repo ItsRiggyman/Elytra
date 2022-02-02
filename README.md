@@ -1,6 +1,6 @@
 # This is an experimental fork and should absolutely not be used in a production environment
 
-## Elytra
+# Elytra
 A fork of Pufferfish optimized for better performance.
 
  # ***Downloads***
