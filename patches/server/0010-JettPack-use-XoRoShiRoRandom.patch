@@ -225,7 +225,7 @@ index 0000000000000000000000000000000000000000..ee637622cc2ce1303f4a8254ee8e559b
 +}
 \ No newline at end of file
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index f28ecec9cc86ec4d79c847db42e071f9ef9557bf..303a97cb08bc521d721cec4e59ed304cdfcb046c 100644
+index b794a259194854ed242422fb3446ee0cba0662ee..8a08067475078190bad197cb49efa1499d8ed293 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -416,7 +416,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -412,10 +412,10 @@ index 97f99a06b8954b08af9f4156abe8abdad359349a..6ea3ceb436e7601ede41f96d2900cd48
          this.hitPlayers = Maps.newHashMap();
          this.level = world;
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 6afbaa4528901784ae6102d3a8aa1430a6e18667..ba1fe207c1687e46dba57e033a105aa866825b6f 100644
+index af2be422c2392d09fceb3089fd4717c00519f50f..f46a6b95f432c72db6f262ae7569514c694601df 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -123,13 +123,13 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -121,13 +121,13 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      public final Thread thread;
      private final boolean isDebug;
      private int skyDarken;
