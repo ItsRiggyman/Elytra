@@ -1,0 +1,83 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: ishland <ishlandmc@yeah.net>
+Date: Tue, 4 Jan 2022 18:11:32 -0500
+Subject: [PATCH] (VMP) ingredient matching cache
+
+Original code by RelativityMC, licensed under MIT
+You can find the original code on https://github.com/RelativityMC/VMP-fabric
+
+Copyright (c) 2021-2022 ishland
+
+diff --git a/src/main/java/net/minecraft/world/item/crafting/Ingredient.java b/src/main/java/net/minecraft/world/item/crafting/Ingredient.java
+index 8f35445477507bbec3c0cb1dccfd888316951595..8aa084eaf2e509b781518b656a6ec6930d44f480 100644
+--- a/src/main/java/net/minecraft/world/item/crafting/Ingredient.java
++++ b/src/main/java/net/minecraft/world/item/crafting/Ingredient.java
+@@ -28,6 +28,9 @@ import net.minecraft.world.entity.player.StackedContents;
+ import net.minecraft.world.item.Item;
+ import net.minecraft.world.item.ItemStack;
+ import net.minecraft.world.level.ItemLike;
++import java.util.stream.Collectors; // Elytra
++import java.util.Set; // Elytra
++import java.util.HashSet; // Elytra
+ 
+ public final class Ingredient implements Predicate<ItemStack> {
+ 
+@@ -38,6 +41,9 @@ public final class Ingredient implements Predicate<ItemStack> {
+     @Nullable
+     private IntList stackingIds;
+     public boolean exact; // CraftBukkit
++    private Set<Item> matchingItems = null; // Elytra
++    private boolean isEmptyMatch = false; // Elytra
++
+ 
+     public Ingredient(Stream<? extends Ingredient.Value> entries) {
+         this.values = (Ingredient.Value[]) entries.toArray((i) -> {
+@@ -65,33 +71,23 @@ public final class Ingredient implements Predicate<ItemStack> {
+         if (itemstack == null) {
+             return false;
+         } else {
+-            this.dissolve();
+-            if (this.itemStacks.length == 0) {
+-                return itemstack.isEmpty();
+-            } else {
+-                ItemStack[] aitemstack = this.itemStacks;
+-                int i = aitemstack.length;
+-
+-                for (int j = 0; j < i; ++j) {
+-                    ItemStack itemstack1 = aitemstack[j];
+-
+-                    // CraftBukkit start
+-                    if (this.exact) {
+-                        if (itemstack1.getItem() == itemstack.getItem() && ItemStack.tagMatches(itemstack, itemstack1)) {
+-                            return true;
+-                        }
+-
+-                        continue;
+-                    }
+-                    // CraftBukkit end
+-                    if (itemstack1.is(itemstack.getItem())) {
+-                        return true;
+-                    }
+-                }
+-
+-                return false;
++            // Elytra start - VMP: ingredient matching cache
++            Set<Item> matchingItems = this.matchingItems;
++            boolean isEmptyMatch = this.isEmptyMatch;
++            if (matchingItems == null) {
++                matchingItems = this.matchingItems = Arrays.stream(this.values)
++                        .flatMap(entry -> entry.getItems().stream())
++                        .filter(itemstack1 -> !itemstack1.isEmpty())
++                        .map(ItemStack::getItem)
++                        .collect(Collectors.toCollection(HashSet::new));
++                isEmptyMatch = this.isEmptyMatch = this.matchingItems.isEmpty();
++            }
++            if (itemstack.isEmpty()) {
++                return isEmptyMatch;
+             }
++            return matchingItems.contains(itemstack.getItem());
+         }
++        // Elytra end
+     }
+ 
+     public IntList getStackingIds() {
